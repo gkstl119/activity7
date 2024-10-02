@@ -20,6 +20,7 @@ class FadingTextAnimation extends StatefulWidget {
 
 class _FadingTextAnimationState extends State<FadingTextAnimation> {
   bool _isVisible = true;
+  bool _isImageVisible = true;
 
   void toggleVisibility() {
     setState(() {
@@ -27,24 +28,50 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
     });
   }
 
+  void toggleImageVisibility() {
+    setState(() {
+      _isImageVisible = !_isImageVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fading Text Animation'),
+        title: Text('Fading Text Animation and image'),
       ),
       body: Center(
-        child: GestureDetector(
-          onTap: toggleVisibility, // Toggles visibility when the text is tapped
-          child: AnimatedOpacity(
-            opacity: _isVisible ? 1.0 : 0.0,
-            duration: const Duration(seconds: 1),
-            curve: Curves.easeInOut,
-            child: const Text(
-              'Hello, Flutter!',
-              style: TextStyle(fontSize: 24),
+        child: Column(
+          // Wrapping the content in a Column
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              onTap: toggleVisibility, // Toggles text visibility on tap
+              child: AnimatedOpacity(
+                opacity: _isVisible ? 1.0 : 0.0,
+                duration: const Duration(seconds: 1),
+                curve: Curves.easeInOut,
+                child: const Text(
+                  'Hello, Flutter!',
+                  style: TextStyle(fontSize: 24),
+                ),
+              ),
             ),
-          ),
+            const SizedBox(height: 20), // Space between text and image
+            GestureDetector(
+              onTap: toggleImageVisibility, // Toggles image visibility on tap
+              child: AnimatedOpacity(
+                opacity: _isImageVisible ? 1.0 : 0.0,
+                duration: const Duration(seconds: 1),
+                curve: Curves.easeInOut,
+                child: Image.network(
+                  'https://www.alleycat.org/wp-content/uploads/2019/03/FELV-cat.jpg',
+                  width: 100,
+                  height: 100,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
